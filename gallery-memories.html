@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lovely Memories 🌸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Noto+Serif+Bengali:wght@400;600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon: #3D0F12;
+    --maroon-deep: #2A0A0C;
+    --rose: #C9505A;
+    --blush: #F4D4D0;
+    --gold: #E8B86D;
+    --cream: #FFF8F2;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{ margin: 0; padding: 0; }
+
+  body{
+    background: radial-gradient(circle at 50% 20%, #5A1A1E 0%, var(--maroon) 45%, var(--maroon-deep) 100%);
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--cream);
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding-bottom: 110px;
+  }
+
+  .back-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--blush);
+    text-decoration: none;
+    opacity: 0.75;
+    margin-bottom: 28px;
+    transition: opacity 0.2s ease;
+  }
+  .back-link:hover{ opacity: 1; }
+
+  header{
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow{
+    font-family: 'Jost', sans-serif;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--gold);
+    margin: 0 0 14px;
+    opacity: 0.85;
+  }
+
+  h1{
+    font-family: 'Noto Serif Bengali', serif;
+    font-weight: 700;
+    font-size: clamp(30px, 6vw, 46px);
+    margin: 0 0 10px;
+    color: var(--cream);
+    text-shadow: 0 0 24px rgba(232,184,109,0.25);
+  }
+
+  .sub{
+    font-style: italic;
+    font-size: 16px;
+    color: var(--blush);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* floating add button + popover */
+  .fab-wrap{
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 20;
+  }
+
+  .fab{
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose), #A8333D);
+    color: var(--cream);
+    font-size: 26px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 22px rgba(201,80,90,0.45);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, rotate 0.25s ease;
+  }
+
+  .fab:hover{
+    transform: scale(1.08);
+    box-shadow: 0 10px 28px rgba(201,80,90,0.6);
+  }
+
+  .fab.open{
+    transform: rotate(45deg);
+  }
+
+  .upload-popover{
+    position: absolute;
+    bottom: 68px;
+    right: 0;
+    width: 260px;
+    border: 1px solid rgba(232,184,109,0.35);
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(45,12,14,0.97), rgba(35,9,11,0.99));
+    backdrop-filter: blur(6px);
+    padding: 18px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .upload-popover.show{ display: flex; }
+
+  .upload-body{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  label{
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--blush);
+    opacity: 0.85;
+  }
+
+  input[type="password"], input[type="file"]{
+    font-family: 'Jost', sans-serif;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(232,184,109,0.3);
+    border-radius: 4px;
+    color: var(--cream);
+    padding: 10px 12px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  input[type="file"]{ cursor: pointer; }
+
+  .field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .upload-row{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button{
+    font-family: 'Jost', sans-serif;
+    border: none;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .upload-btn{
+    background: linear-gradient(135deg, var(--rose), #A8333D);
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 11px 0;
+    width: 100%;
+    box-shadow: 0 6px 18px rgba(201,80,90,0.4);
+  }
+
+  .upload-btn:hover{ transform: scale(1.04); }
+  .upload-btn:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .status{
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    color: var(--gold);
+    min-height: 18px;
+    opacity: 0.9;
+  }
+  .status.error{ color: #e69a9a; }
+
+  .token-note{
+    font-family: 'Jost', sans-serif;
+    font-size: 11.5px;
+    color: var(--blush);
+    opacity: 0.55;
+    line-height: 1.5;
+  }
+
+  /* gallery grid */
+  .gallery{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .gallery figure{
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(232,184,109,0.25);
+    background: rgba(255,255,255,0.03);
+    position: relative;
+    aspect-ratio: 1 / 1;
+  }
+
+  .gallery img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery figure:hover img{ transform: scale(1.06); }
+
+  .gallery figure::after{
+    content: "❀";
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    color: var(--gold);
+    font-size: 13px;
+    opacity: 0.7;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  }
+
+  .empty-state{
+    text-align: center;
+    padding: 48px 20px;
+    font-style: italic;
+    color: var(--blush);
+    opacity: 0.7;
+    font-size: 17px;
+  }
+
+  .loading{
+    text-align: center;
+    padding: 30px;
+    font-family: 'Jost', sans-serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 480px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* floating audio spectrum bar */
+  .spectrum-bar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 56px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 0 16px;
+    background: linear-gradient(0deg, rgba(20,5,6,0.92), rgba(20,5,6,0.55), transparent);
+    z-index: 15;
+    pointer-events: none;
+  }
+
+  .spectrum-bar.show{ display: flex; }
+
+  .spectrum-bar .bar{
+    width: 3px;
+    min-height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(180deg, var(--gold), var(--rose));
+    box-shadow: 0 0 6px rgba(232,184,109,0.5);
+    transition: height 0.08s ease;
+  }
+
+  @media (max-width: 480px){
+    .spectrum-bar .bar{ width: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<audio id="bgSong" preload="auto" loop>
+  <source src="song92.mp3" type="audio/mpeg">
+</audio>
+
+<div class="spectrum-bar" id="spectrumBar"></div>
+
+<div class="wrap">
+  <a class="back-link" href="index.html">← ফিরে যাও</a>
+
+  <header>
+    <p class="eyebrow">🌸 আমাদের গ্যালারি 🌸</p>
+    <h1>Lovely Memories</h1>
+    <p class="sub">একসাথে কাটানো প্রতিটা মুহূর্ত, এক জায়গায় 💕</p>
+  </header>
+
+  <div id="galleryRoot">
+    <p class="loading">ছবি লোড হচ্ছে...</p>
+  </div>
+</div>
+
+<div class="fab-wrap">
+  <div class="upload-popover" id="uploadPopover">
+    <div class="upload-body">
+      <div class="field">
+        <label for="tokenInput">GitHub Token</label>
+        <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      </div>
+      <div class="upload-row">
+        <div class="field">
+          <label for="fileInput">ছবি বেছে নাও</label>
+          <input type="file" id="fileInput" accept="image/*" multiple>
+        </div>
+        <button class="upload-btn" id="uploadBtn">আপলোড করো</button>
+      </div>
+      <p class="status" id="statusMsg"></p>
+    </div>
+  </div>
+  <button class="fab" id="fabBtn" aria-label="ছবি যুক্ত করো">+</button>
+</div>
+
+<script>
+  const OWNER = 'rohandhar292-ux';
+  const REPO = 'charulata';
+  const FOLDER = 'images/memories';
+  const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}`;
+
+  const galleryRoot = document.getElementById('galleryRoot');
+  const tokenInput = document.getElementById('tokenInput');
+  const fileInput = document.getElementById('fileInput');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const fabBtn = document.getElementById('fabBtn');
+  const uploadPopover = document.getElementById('uploadPopover');
+
+  fabBtn.addEventListener('click', () => {
+    const isOpen = uploadPopover.classList.toggle('show');
+    fabBtn.classList.toggle('open', isOpen);
+  });
+
+  document.addEventListener('click', (e) => {
+    if(!uploadPopover.classList.contains('show')) return;
+    const clickedInside = uploadPopover.contains(e.target) || fabBtn.contains(e.target);
+    if(!clickedInside){
+      uploadPopover.classList.remove('show');
+      fabBtn.classList.remove('open');
+    }
+  });
+
+  function setStatus(msg, isError){
+    statusMsg.textContent = msg;
+    statusMsg.classList.toggle('error', !!isError);
+  }
+
+  async function loadGallery(){
+    try{
+      const res = await fetch(`${API_BASE}?t=${Date.now()}`, {
+        headers: { 'Accept': 'application/vnd.github+json' },
+        cache: 'no-store'
+      });
+      if(res.status === 404){
+        renderGallery([]);
+        return;
+      }
+      if(!res.ok) throw new Error('GitHub API error: ' + res.status);
+      const data = await res.json();
+      const images = Array.isArray(data)
+        ? data.filter(item => item.type === 'file' && /\.(png|jpe?g|gif|webp)$/i.test(item.name))
+        : [];
+      renderGallery(images);
+    }catch(err){
+      galleryRoot.innerHTML = `<p class="empty-state">ছবি লোড করতে সমস্যা হচ্ছে। (${err.message})</p>`;
+    }
+  }
+
+  function renderGallery(images){
+    if(images.length === 0){
+      galleryRoot.innerHTML = '<p class="empty-state">এখনও কোনো ছবি নেই... প্রথম স্মৃতিটা যুক্ত করো 🥀</p>';
+      return;
+    }
+    images.sort((a, b) => a.name.localeCompare(b.name));
+    const grid = document.createElement('div');
+    grid.className = 'gallery';
+    images.forEach(img => {
+      const fig = document.createElement('figure');
+      const image = document.createElement('img');
+      image.src = img.download_url;
+      image.alt = img.name;
+      image.loading = 'lazy';
+      fig.appendChild(image);
+      grid.appendChild(fig);
+    });
+    galleryRoot.innerHTML = '';
+    galleryRoot.appendChild(grid);
+  }
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(new Error('ফাইল পড়তে সমস্যা হয়েছে'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadOneFile(file, token){
+    const base64 = await fileToBase64(file);
+    const safeName = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const path = `${FOLDER}/${safeName}`;
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
+
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Add memory photo: ${file.name}`,
+        content: base64
+      })
+    });
+
+    if(!res.ok){
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || `Upload failed (${res.status})`);
+    }
+  }
+
+  uploadBtn.addEventListener('click', async () => {
+    const token = tokenInput.value.trim();
+    const files = fileInput.files;
+
+    if(!token){
+      setStatus('আগে GitHub টোকেন দাও।', true);
+      return;
+    }
+    if(!files || files.length === 0){
+      setStatus('একটা ছবি বেছে নাও।', true);
+      return;
+    }
+
+    uploadBtn.disabled = true;
+    let success = 0;
+
+    for(let i = 0; i < files.length; i++){
+      setStatus(`আপলোড হচ্ছে... (${i + 1}/${files.length})`, false);
+      try{
+        await uploadOneFile(files[i], token);
+        success++;
+      }catch(err){
+        setStatus(`ব্যর্থ: ${err.message}`, true);
+        uploadBtn.disabled = false;
+        if(success > 0) await loadGallery();
+        return;
+      }
+    }
+
+    setStatus(`✅ ${success}টা ছবি যুক্ত হয়েছে!`, false);
+    fileInput.value = '';
+    uploadBtn.disabled = false;
+    await loadGallery();
+    setTimeout(() => {
+      uploadPopover.classList.remove('show');
+      fabBtn.classList.remove('open');
+      setStatus('', false);
+    }, 1400);
+  });
+
+  loadGallery();
+
+  // ---- background song + live spectrum visualizer ----
+  const bgSong = document.getElementById('bgSong');
+  const spectrumBar = document.getElementById('spectrumBar');
+
+  const BAR_COUNT = 40;
+  for(let i = 0; i < BAR_COUNT; i++){
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    spectrumBar.appendChild(bar);
+  }
+  const barEls = spectrumBar.querySelectorAll('.bar');
+
+  let audioCtx, analyser, dataArray, sourceNode;
+  let rafId = null;
+
+  function setupAnalyser(){
+    if(audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    sourceNode = audioCtx.createMediaElementSource(bgSong);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 128;
+    sourceNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+  }
+
+  function drawSpectrum(){
+    if(!analyser) return;
+    analyser.getByteFrequencyData(dataArray);
+    const step = Math.floor(dataArray.length / BAR_COUNT);
+    barEls.forEach((bar, i) => {
+      const value = dataArray[i * step] || 0;
+      const height = Math.max(3, (value / 255) * 48);
+      bar.style.height = height + 'px';
+    });
+    rafId = requestAnimationFrame(drawSpectrum);
+  }
+
+  function startVisualizer(){
+    spectrumBar.classList.add('show');
+    if(!rafId) drawSpectrum();
+  }
+
+  function stopVisualizer(){
+    spectrumBar.classList.remove('show');
+    if(rafId){
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  function tryPlayBgSong(){
+    setupAnalyser();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    bgSong.play().then(() => {
+      startVisualizer();
+    }).catch(() => {
+      // autoplay blocked, will retry on next interaction
+    });
+  }
+
+  bgSong.addEventListener('pause', stopVisualizer);
+  bgSong.addEventListener('play', startVisualizer);
+  bgSong.addEventListener('ended', stopVisualizer);
+
+  window.addEventListener('click', () => {
+    if(bgSong.paused) tryPlayBgSong();
+  }, { once: true });
+
+  // also try immediately in case autoplay is allowed
+  tryPlayBgSong();
+</script>
+
+</body>
+</html>
